@@ -18,3 +18,7 @@ FOnline online players count status for ESP8266 powered chips written in Arduino
 
 - [ ] Multiple remotes
 - [ ] Replace delay ping comepnsation with a check if write connection's over
+
+### Required libraries
+
+- ESP8266WiFi
