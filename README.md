@@ -10,7 +10,7 @@ FOnline online players count status for ESP8266 powered chips written in Arduino
 - [x] Writes 4 required bytes
 - [x] Delay in between write and read
 - [x] Read data to buffer
-- [x] Endian swap
+- [ ] Endian swap
 - [ ] Online number parse
 - [ ] Render onto OLED 128x64 display
 
