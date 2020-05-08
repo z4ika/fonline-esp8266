@@ -60,6 +60,7 @@ void loop()
     unsigned int recvLen = client.available();
     if ( recvLen > 0 )
     {
+      printf( " bytes recieved %u", recvLen );
       buffer = new byte[recvLen];
       Serial.println("Starting read:");
 
@@ -70,9 +71,6 @@ void loop()
         printf("%02X", buffer[i]);
       }
       Serial.println("Read complete");
-      Serial.println("Starting endian swap");
-      endianness_swap( buffer, sizeof( buffer ) );
-      Serial.println("Endian swap complete");
       Serial.println("Starting print:");
 
       for ( unsigned int i = 0; i < recvLen; i ++)
@@ -80,9 +78,13 @@ void loop()
         Serial.println(i);
         printf("%02X", buffer[i]);
       }
-      unsigned int* online = (unsigned int*)buffer;
       Serial.println("Online:");
-      Serial.println(*online);
+      unsigned int online = 0;
+      online |= (buffer[3] << 24) & 0xFF;
+      online |= (buffer[2] << 16) & 0xFF;
+      online |= (buffer[1] << 8 ) & 0xFF;
+      online |= buffer[0] & 0xFF;
+      Serial.println(online);
       delete[] buffer;
     }
     client.stop();
