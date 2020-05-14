@@ -1,12 +1,26 @@
 #include <ESP8266WiFi.h>
+#include <Wire.h>  
+#include "SSD1306Wire.h"
+#include <OLEDDisplayUi.h>
 
-const char* host = "game.fonline2.com";
+const char* host = "play.fonline-aop.net";
 const uint16_t port = 4000;
 const char* ssid = "";
 const char* password = "";
+const char* online_info = "Ashes of Phoenix Online:";
+
+SSD1306Wire display(0x3c, 0, 2);
+OLEDDisplayUi ui ( &display );
 
 void setup()
 {
+  display.init();
+  display.clear();
+  display.display();
+
+  display.setFont(ArialMT_Plain_10);
+  display.setContrast(255);
+  
   Serial.begin(115200);
   WiFi.begin(ssid, password);
   Serial.print("Connecting to network");
@@ -15,6 +29,10 @@ void setup()
   {
     delay(500);
     Serial.print(".");
+    display.clear();
+    display.flipScreenVertically();
+    display.drawString(0, 0, "Connecting to WiFi");
+    display.display();
   }
   Serial.println();
   Serial.print("Connected, IP address: ");
@@ -85,6 +103,16 @@ void loop()
       online |= (buffer[1] << 8 ) & 0xFF;
       online |= buffer[0] & 0xFF;
       Serial.println(online);
+      
+      char converted[33];
+      String str_online = itoa( online, converted, 10 );
+      
+      display.setTextAlignment(TEXT_ALIGN_LEFT);
+      display.clear();
+      display.drawString(0, 0, online_info);
+      display.drawString(0, 32, str_online);
+      display.display();
+      
       delete[] buffer;
     }
     client.stop();
