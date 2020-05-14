@@ -38,24 +38,6 @@ void setup()
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
 }
-
-void endianness_swap ( void* ptr, unsigned int len )
-{
-  if ( len > 1 )
-  {
-    if ( ptr != NULL )
-    {
-      char* begin = (char*)ptr;
-      for (int i = 0, j = len - 1; i < j; i ++, j --)
-      {
-        begin[i]                ^= begin[j];
-        begin[j]                ^= begin[i];
-        begin[i]                ^= begin[j];
-      }
-    }
-  }
-}
-
 void loop()
 {
   Serial.print("Connecting to remote: ");
