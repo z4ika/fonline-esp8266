@@ -2,7 +2,7 @@
 
 > World without transistors that's being held online by transistors
 
-FOnline online players count status for ESP8266 powered chips written in Arduino C++
+FOnline online players count status for ESP8266 powered chips written in Arduino Framework
 
 ### Core
 
@@ -13,11 +13,11 @@ FOnline online players count status for ESP8266 powered chips written in Arduino
 - [x] Endian swap
 - [x] Online number parse
 - [x] Render onto OLED 128x64 display
+- [x] Multiple remotes
 
 ### Optional TODO
 
-- [ ] Multiple remotes
-- [ ] Replace delay ping comepnsation with a check if write connection's over
+It's all done!
 
 ### Required libraries
 
@@ -27,6 +27,6 @@ FOnline online players count status for ESP8266 powered chips written in Arduino
 - Wire
 
 ### Credits
-[Vice Dice](https://github.com/ViceDice)
-[ESP8266 OLED SD 1366](https://github.com/ThingPulse/esp8266-oled-ssd1306 )
-[ESP8266](https://github.com/esp8266/Arduino)
+- [Vice Dice](https://github.com/ViceDice)
+- [ESP8266 OLED SD 1366](https://github.com/ThingPulse/esp8266-oled-ssd1306)
+- [ESP8266](https://github.com/esp8266/Arduino)

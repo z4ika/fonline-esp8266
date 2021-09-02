@@ -1,15 +1,27 @@
+/* Stock Adafruit ESP8266wifi library & ThingPulse OLED SSD1306 */
 #include <ESP8266WiFi.h>
 #include <Wire.h>  
-#include "SSD1306Wire.h"
 #include <OLEDDisplayUi.h>
+#include <SSD1306Wire.h>
 
-const char* host = "play.fonline-aop.net";
-const uint16_t port = 4000;
-const char* ssid = "";
-const char* password = "";
-const char* online_info = "Ashes of Phoenix Online:";
+/* Arrays with IP addresses and ports of servers */
+char* hosts[4] =          {"game.fonline2.com", "fo4rp.frp.su", "europe.fonline.org", "game.fallout-requiem.ru"};
+const uint16_t ports[4] = { 4000,                4000,           2238,                 6112};
 
-SSD1306Wire display(0x3c, 0, 2);
+/* Names of servers */
+char* online_info[4] ={"FOnline 2 Online:", "FOnlineRP Online:", "FOnline: Reloaded Online:", "FOnline: Requiem Online:"};
+
+/* Wifi SSID & WPA password */
+const char* ssid = "networkssid";
+const char* password = "networkpassword";
+
+/* Initialize display
+ *  
+ * 0x3c = I2C display address,
+ * 5    = SDA (DATA SPI) GPIO (D1 on NodeMCU) pin number,
+ * 4    = SCL (SCK SPI)  GPIO (D2 on NodeMCU) pin number.
+ */
+SSD1306Wire display(0x3c, 4, 5);
 OLEDDisplayUi ui ( &display );
 
 void setup()
@@ -34,11 +46,18 @@ void setup()
     display.drawString(0, 0, "Connecting to WiFi");
     display.display();
   }
+  
   Serial.println();
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
+  delay(2000);
 }
-void loop()
+
+/* Online checker function;
+ * sends an array of bytes and 
+ * retrieves the online into buffer
+ */
+void OnlineCheck(char* host, uint16_t port, char* online_info)
 {
   Serial.print("Connecting to remote: ");
   Serial.print(host);
@@ -48,12 +67,12 @@ void loop()
 
   WiFiClient client;
 
-  if (client.connect(host, port))
+   if (client.connect(host, port))
   {
     byte fonline[] = { 0xFF, 0xFF, 0xFF, 0xFF };
     client.write(fonline, sizeof(fonline));
 
-    Serial.println("Write complete. Waiting 10s");
+    Serial.println("Bytes sent. Waiting 10s");
     delay(10000);
 
     byte* buffer = NULL;
@@ -105,6 +124,13 @@ void loop()
   {
     Serial.println("Connection failed or was refused.");
     delay(5000);
-    return;
+  }
+}
+
+void loop()
+{
+  for( int i = 0; i < 4; i++ )
+  {
+    OnlineCheck(hosts[i], ports[i], online_info[i]);
   }
 }
